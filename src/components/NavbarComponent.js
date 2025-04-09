@@ -1,15 +1,14 @@
-// components/NavbarComponent.js
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { FaShip } from 'react-icons/fa'; // ✅ Import a ship icon
+import { FaShip } from 'react-icons/fa';
 
 function NavbarComponent() {
   return (
-    <Navbar expand="md" bg="dark" variant="dark" sticky="top" className="py-3"> {/* ✅ Taller navbar */}
+    <Navbar expand="md" bg="dark" variant="dark" sticky="top" className="py-3"> 
       <Container>
         <Navbar.Brand as={Link} to="/" className="d-flex align-items-center gap-2">
-          <FaShip size={24} className="text-info" /> {/* ✅ Add ship icon */}
-          <span className="fw-bold fs-5">Boat Booking</span> {/* Branding text */}
+          <FaShip size={24} className="text-info" /> 
+          <span className="fw-bold fs-5">Boat Booking</span> 
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="main-navbar" />
         <Navbar.Collapse id="main-navbar">
@@ -19,6 +18,7 @@ function NavbarComponent() {
             <Nav.Link as={Link} to="/admin">Admin</Nav.Link>
             <Nav.Link as={Link} to="/booking">Book now</Nav.Link>
             <Nav.Link as={Link} to="/prediction">Prediction</Nav.Link>
+            <Nav.Link as={Link} to="/my-bookings">View your booking</Nav.Link>
 
           </Nav>
         </Navbar.Collapse>

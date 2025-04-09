@@ -10,11 +10,13 @@ import AdminDashboard from './pages/AdminDashboard';
 import BookingPage from './pages/BookingPage'; 
 import PredictionPage from './pages/PredictionPage';
 import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; // Toastify default styles
+import 'react-toastify/dist/ReactToastify.css'; 
 import BoatForm from './components/BoatForm';
 import SeatForm from './components/SeatForm';
 import BookingList from './components/BookingList';
 import UserList from './components/UserList';
+import ViewBoatsPage from "./pages/ViewBoatsPage";
+import UserBookingStatusPage from "./pages/UserBookingStatusPage"; // 🆕
 
 function App() {
   return (
@@ -32,7 +34,9 @@ function App() {
             <Route path="/admin/boats" element={<BoatForm />} />
             <Route path="/admin/seats" element={<SeatForm />} />
             <Route path="/admin/bookings" element={<BookingList />} />
+            <Route path="/admin/view-boats" element={<ViewBoatsPage />} />
             <Route path="/admin/users" element={<UserList />} />
+            <Route path="/my-bookings" element={<UserBookingStatusPage />} />
           </Routes>
         </div>
         <Footer />

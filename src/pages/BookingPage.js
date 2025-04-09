@@ -1,110 +1,178 @@
 import React, { useState } from 'react';
-import { Form, Button, Card, Row, Col } from 'react-bootstrap';
+import { Card, Button, Modal, Form, Row, Col } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import SectionHeader from '../components/SectionHeader';
+import { FaShip } from 'react-icons/fa';
+import Boat from '../assets/boat.jfif'
 
-const mockBoats = ['Sunshine', 'Wave Rider', 'Ocean Breeze'];
-const mockSeats = ['A1', 'A2', 'A3', 'B1', 'B2', 'B3'];
+const boats = [
+  {
+    name: 'Sunshine',
+    type: 'Catamaran',
+    description: 'A luxury cruise boat',
+    seatCount: 40,
+    yearBuilt: 2015,
+    regNo: 'REG12345',
+    image: Boat,
+  },
+  {
+    name: 'Wave Rider',
+    type: 'Speedboat',
+    description: 'Fast and exciting ride',
+    seatCount: 20,
+    yearBuilt: 2018,
+    regNo: 'REG67890',
+    image: Boat,
+  },
+];
 
-function BookingPage() {
-  const [selectedBoat, setSelectedBoat] = useState('');
-  const [selectedDate, setSelectedDate] = useState('');
-  const [selectedSeats, setSelectedSeats] = useState([]);
+const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-  const toggleSeat = (seat) => {
-    setSelectedSeats((prev) =>
-      prev.includes(seat)
-        ? prev.filter((s) => s !== seat)
-        : [...prev, seat]
-    );
+function BookingCardView() {
+  const [showModal, setShowModal] = useState(false);
+  const [selectedBoat, setSelectedBoat] = useState(null);
+  const [formData, setFormData] = useState({
+    userName: '',
+    seats: '',
+    day: '',
+    date: '',
+    price: '',
+  });
+
+  const handleShow = (boat) => {
+    setSelectedBoat(boat);
+    setShowModal(true);
   };
 
-  const handleBooking = (e) => {
-    e.preventDefault();
+  const handleClose = () => {
+    setShowModal(false);
+    setFormData({ userName: '', seats: '', day: '', date: '', price: '' });
+  };
 
-    if (!selectedBoat || !selectedDate || selectedSeats.length === 0) {
-      toast.warning('Please fill all fields and select at least one seat.');
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleBooking = () => {
+    const { userName, seats, day, date, price } = formData;
+    if (!userName || !seats || !day || !date || !price) {
+      toast.warning('Please fill all booking details.');
       return;
     }
 
-    console.log({
-      boat: selectedBoat,
-      date: selectedDate,
-      seats: selectedSeats,
-    });
-
-    toast.success('Booking Successful!');
-    setSelectedSeats([]);
-    setSelectedDate('');
-    setSelectedBoat('');
+    console.log('Booking Details:', { ...formData, boat: selectedBoat.name });
+    toast.success('Booking Confirmed!');
+    handleClose();
   };
-
-  const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
 
   return (
     <div className="container py-4">
-      <Card className="shadow-lg border-0 rounded-4">
-        <Card.Body>
-             <SectionHeader title="Book Your Boat" />
+      <h2 className="text-center mb-4 fw-bold">Available Boats</h2>
+      <Row>
+        {boats.map((boat, idx) => (
+          <Col md={6} key={idx} className="mb-4">
+            <Card className="shadow-lg border-0 rounded-4">
+              <Card.Img variant="top" src={boat.image} className="rounded-top-4" style={{ width: '100%', height: '300px', objectFit: 'cover' }} />
+              <Card.Body>
+                <Card.Title className="fw-bold text-primary">
+                  <FaShip className="me-2" />
+                  {boat.name}
+                </Card.Title>
+                <Card.Text><strong>Type:</strong> {boat.type}</Card.Text>
+                <Card.Text><strong>Description:</strong> {boat.description}</Card.Text>
+                <Card.Text><strong>Seats:</strong> {boat.seatCount}</Card.Text>
+                <Card.Text><strong>Year Built:</strong> {boat.yearBuilt}</Card.Text>
+                <Card.Text><strong>Reg No:</strong> {boat.regNo}</Card.Text>
+                <Button className="rounded-pill w-100 fw-semibold" variant="primary" onClick={() => handleShow(boat)}>
+                  Book Now
+                </Button>
+              </Card.Body>
+            </Card>
+          </Col>
+        ))}
+      </Row>
 
-
-          <Form onSubmit={handleBooking}>
+      <Modal show={showModal} onHide={handleClose} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Book {selectedBoat?.name}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
             <Form.Group className="mb-3">
-              <Form.Label className="fw-semibold">Select Boat</Form.Label>
-              <Form.Select
-                value={selectedBoat}
-                onChange={(e) => setSelectedBoat(e.target.value)}
-                className="rounded-3"
-                required
-              >
-                <option value="">-- Choose Boat --</option>
-                {mockBoats.map((boat, idx) => (
-                  <option key={idx} value={boat}>
-                    {boat}
-                  </option>
-                ))}
-              </Form.Select>
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label className="fw-semibold">Select Date</Form.Label>
+              <Form.Label>User Name</Form.Label>
               <Form.Control
-                type="date"
-                min={today}
-                value={selectedDate}
-                onChange={(e) => setSelectedDate(e.target.value)}
-                className="rounded-3"
-                required
+                type="text"
+                name="userName"
+                value={formData.userName}
+                onChange={handleChange}
+                placeholder="Enter your name"
               />
             </Form.Group>
 
-            <Form.Group className="mb-4">
-              <Form.Label className="fw-semibold">Select Seats</Form.Label>
-              <Row>
-                {mockSeats.map((seat, idx) => (
-                  <Col xs={6} sm={4} md={3} className="mb-2" key={idx}>
-                    <Button
-                      variant={selectedSeats.includes(seat) ? 'primary' : 'outline-primary'}
-                      className="w-100 rounded-pill"
-                      onClick={() => toggleSeat(seat)}
-                      type="button"
-                    >
-                      {seat}
-                    </Button>
-                  </Col>
-                ))}
-              </Row>
+            <Form.Group className="mb-3">
+              <Form.Label>Number of Seats</Form.Label>
+              <Form.Control
+                type="number"
+                name="seats"
+                value={formData.seats}
+                onChange={handleChange}
+                placeholder="e.g., 2"
+                min="1"
+              />
             </Form.Group>
 
-            <Button type="submit" variant="primary" className="w-100 rounded-pill fw-semibold">
-              Confirm Booking
-            </Button>
+            <Form.Group className="mb-3">
+              <Form.Label>Day</Form.Label>
+              <div>
+                {days.map((day, idx) => (
+                  <Form.Check
+                    key={idx}
+                    inline
+                    label={day}
+                    name="day"
+                    type="radio"
+                    value={day}
+                    checked={formData.day === day}
+                    onChange={handleChange}
+                  />
+                ))}
+              </div>
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Date</Form.Label>
+              <Form.Control
+                type="date"
+                name="date"
+                value={formData.date}
+                onChange={handleChange}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Price (in ₹)</Form.Label>
+              <Form.Control
+                type="number"
+                name="price"
+                value={formData.price}
+                onChange={handleChange}
+                placeholder="e.g., 2000"
+              />
+            </Form.Group>
           </Form>
-        </Card.Body>
-      </Card>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="danger" onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleBooking}>
+            Confirm Booking
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }
 
-export default BookingPage;
+export default BookingCardView;

@@ -14,8 +14,8 @@ function PredictionPage() {
     setNextMonday(monday.format('dddd, MMMM Do YYYY'));
 
     // Mock prediction logic
-    const price = 1000 + Math.floor(Math.random() * 200); // base price + random
-    const seats = 30 - Math.floor(Math.random() * 10);     // 30 seats, some booked
+    const price = 1000 + Math.floor(Math.random() * 200);
+    const seats = 30 - Math.floor(Math.random() * 10);     
 
     setPredictedPrice(`₹${price}`);
     setAvailableSeats(seats);

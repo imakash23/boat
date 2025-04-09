@@ -1,13 +1,15 @@
-/* src/App.css */
+
 html, body, #root {
   height: 100%;
   margin: 0;
+  
 }
 
 .app-container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background: linear-gradient(to right, #00f2fe, #4facfe) !important;
 }
 
 .main-content {
@@ -46,4 +48,12 @@ button.btn-primary {
 button.btn-primary:hover {
   background-image: linear-gradient(to right, #00f2fe, #4facfe);
   box-shadow: 0 4px 12px rgba(0, 242, 254, 0.4);
+}
+
+/* Add this in a CSS file */
+.table td, .table th {
+  vertical-align: middle;
+}
+.table img {
+  object-fit: cover;
 }
