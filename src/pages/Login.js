@@ -3,25 +3,31 @@ import { Container, Row, Col, Card, Form, Button } from 'react-bootstrap';
 import SectionHeader from "../components/SectionHeader";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+
 
 function Login() {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = (e) => {
     e.preventDefault();
-
+  
     if (!email || !password) {
       toast.warning("Please enter both email and password");
       return;
     }
-    if (email === "admin@boat.com" && password === "admin123") {
+  
+   
       toast.success("Login successful!");
-    } else {
-      toast.error("Invalid credentials");
-    }
+      setTimeout(() => {
+        navigate("/home"); 
+      }, 1000); 
+   
   };
-
+  
   return (
     <Container className="d-flex align-items-center justify-content-center min-vh-100  px-2">
       <Row className="w-100">

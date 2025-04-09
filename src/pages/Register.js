@@ -182,7 +182,7 @@ function Register() {
                 <div className="mt-3 text-center">
                   <small className="text-muted">
                     Already registered?{' '}
-                    <a href="/login" className="text-primary fw-semibold">
+                    <a href="/" className="text-primary fw-semibold">
                       Login
                     </a>
                   </small>

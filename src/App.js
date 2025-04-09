@@ -25,9 +25,9 @@ function App() {
         <NavbarComponent />
         <div className="main-content">
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/home" element={<Home />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/booking" element={<BookingPage />} />
             <Route path="/prediction" element={<PredictionPage />} />
